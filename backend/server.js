@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const homeRoutes = require('./routes/homeRoutes');
 const authRoutes = require('./routes/authRoutes')
+const transactionRoutes = require('./routes/transactionRoutes');
 
 dotenv.config();
 const app = express();
@@ -16,6 +17,7 @@ connectDB()
 
 app.use('/', homeRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/transactions', transactionRoutes);
 
 const PORT = 5001;
 app.listen(PORT, ()=> {
