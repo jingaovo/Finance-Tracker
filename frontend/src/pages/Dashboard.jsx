@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
+import TransactionSummary from "../components/TransactionSummary";
+import TransactionTable from "../components/TransactionTable";
+import TransactionModal from "../components/TransactionModal";
 
 const Dashboard = () => {
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [currentTransaction, setCurrentTransaction] = useState(null);
 
     useEffect(() => {
         const fetchTransactions = async () => {
@@ -32,6 +37,55 @@ const Dashboard = () => {
         fetchTransactions();
     }, []);
 
+    const handleAddTransaction = (newTransaction) => {
+        setTransactions((prev) => [...prev, newTransaction]);
+    };
+
+    const handleEditTransaction = (updatedTransaction) => {
+        setTransactions((prev) =>
+            prev.map((transaction) =>
+                transaction._id === updatedTransaction._id
+                    ? updatedTransaction
+                    : transaction
+            )
+        );
+    };
+
+    const handleDeleteTransaction = async (transactionId) => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(
+                `http://localhost:5001/api/transactions/${transactionId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Failed to delete transaction");
+            }
+
+            setTransactions((prev) =>
+                prev.filter((transaction) => transaction._id !== transactionId)
+            );
+        } catch (err) {
+            console.error("Error deleting transaction:", err.message);
+        }
+    };
+
+    const openEditModal = (transaction) => {
+        setCurrentTransaction(transaction);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setCurrentTransaction(null);
+    };
+
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -43,66 +97,30 @@ const Dashboard = () => {
     return (
         <div className="dashboard">
             <h1 className="dashboard-title">Dashboard</h1>
+            <button
+                className="add-transaction-button"
+                onClick={() => setIsModalOpen(true)}
+            >
+                Add Transaction
+            </button>
             <TransactionSummary transactions={transactions} />
             {transactions.length > 0 ? (
-                <TransactionTable transactions={transactions} />
+                <TransactionTable
+                    transactions={transactions}
+                    onEdit={openEditModal}
+                    onDelete={handleDeleteTransaction}
+                />
             ) : (
                 <p className="no-transactions">No transactions yet. Add your first transaction!</p>
             )}
+            {isModalOpen && (
+                <TransactionModal
+                    onClose={closeModal}
+                    onAddTransaction={currentTransaction ? handleEditTransaction : handleAddTransaction}
+                    transaction={currentTransaction}
+                />
+            )}
         </div>
-    );
-};
-
-const TransactionSummary = ({ transactions }) => {
-    const totalIncome = transactions
-        .filter((t) => t.type === "income")
-        .reduce((sum, t) => sum + t.amount, 0);
-
-    const totalExpenses = transactions
-        .filter((t) => t.type === "expense")
-        .reduce((sum, t) => sum + t.amount, 0);
-
-    const balance = totalIncome - totalExpenses;
-
-    return (
-        <div className="transaction-summary">
-            <div className="summary-item">
-                <span>Total Income:</span> <span>${totalIncome.toFixed(2)}</span>
-            </div>
-            <div className="summary-item">
-                <span>Total Expenses:</span> <span>${totalExpenses.toFixed(2)}</span>
-            </div>
-            <div className="summary-item">
-                <span>Balance:</span> <span>${balance.toFixed(2)}</span>
-            </div>
-        </div>
-    );
-};
-
-const TransactionTable = ({ transactions }) => {
-    return (
-        <table className="transaction-table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Category</th>
-                    <th>Description</th>
-                    <th>Type</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                {transactions.map((transaction) => (
-                    <tr key={transaction._id}>
-                        <td>{new Date(transaction.date).toLocaleDateString()}</td>
-                        <td>{transaction.category}</td>
-                        <td>{transaction.description}</td>
-                        <td>{transaction.type}</td>
-                        <td>${transaction.amount.toFixed(2)}</td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
     );
 };
 
