@@ -1,10 +1,21 @@
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Header from "./components/Header";
+import Dashboard from "./pages/Dashboard";
+import LandingPage from "./pages/LandingPage";
 
-export default function App() {
+const App = () => {
   return (
-    <div className="p-4">
-      <h1 className="text-3xl font-bold text-red-500">Hello, Finance Tracker!</h1>
-    </div>
+    <Router>
+      <Header />
+      <main className="p-6">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </main>
+    </Router>
   );
 }
 
+export default App;

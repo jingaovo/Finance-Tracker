@@ -1,0 +1,63 @@
+.header {
+    background: linear-gradient(to right, #f9f5e6, #f5e1da);
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #3c3c3c;
+    margin: 0;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link {
+    color: #3c3c3c;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+    display: inline-block; /* Ensure buttons behave like links */
+    border: none; /* Remove button-specific styles */
+    background: none;
+}
+
+.nav-link:hover {
+    background-color: #cbad79;
+    color: #ffffff;
+}
+
+.logout-button {
+    padding: 8px 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #3c3c3c;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.logout-button:hover {
+    background-color: #cbad79;
+    color: #ffffff;
+}
