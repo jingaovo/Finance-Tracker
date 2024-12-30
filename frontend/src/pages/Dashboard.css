@@ -40,3 +40,29 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-input,
+.filter-select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  width: calc(33.33% - 10px);
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  outline: none;
+  border-color: #b5a68c;
+  box-shadow: 0 0 5px rgba(181, 166, 140, 0.5);
+}
+
