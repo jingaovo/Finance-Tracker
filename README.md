@@ -2,6 +2,16 @@
 
 A full-stack personal finance application for tracking income and expenses, visualizing spending patterns, and managing transactions from a clean dashboard.
 
+## Screenshots
+
+### Landing page
+
+![Finance Tracker landing page — sign in and register](docs/images/landing-page.png)
+
+### Dashboard
+
+![Finance Tracker dashboard — summary, charts, and transactions](docs/images/dashboard.png)
+
 ## Features
 
 - **User authentication** — Register and sign in with JWT-based sessions
@@ -23,6 +33,8 @@ A full-stack personal finance application for tracking income and expenses, visu
 
 ```
 Finance-Tracker/
+├── docs/
+│   └── images/          # README screenshots (landing-page.png, dashboard.png)
 ├── backend/
 │   ├── config/          # Database connection
 │   ├── controllers/     # Route handlers
